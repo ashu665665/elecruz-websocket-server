@@ -50,6 +50,17 @@ const findNearbyDrivers = (userLat, userLon) => {
     .map(([id, location]) => ({ id, ...location }));
 };
 
+// Health check endpoint
+app.get("/healthcheck", (req, res) => {
+  const isWebSocketListening = wss._server && wss._server.listening; // Check if the WebSocket server is listening
+  res.status(200).json({
+    websocketRunning: isWebSocketListening,
+    message: isWebSocketListening
+      ? "WebSocket server is operational and accepting connections"
+      : "WebSocket server is not running or not accepting connections",
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
