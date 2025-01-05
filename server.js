@@ -45,7 +45,7 @@ const findNearbyDrivers = (userLat, userLon) => {
         { latitude: userLat, longitude: userLon },
         location
       );
-      return distance <= 5000; // 5 kilometers
+      return distance <= 50000000; // 5 kilometers
     })
     .map(([id, location]) => ({ id, ...location }));
 };
