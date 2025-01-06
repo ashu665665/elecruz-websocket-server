@@ -1,6 +1,7 @@
 const express = require("express");
 const { WebSocketServer } = require("ws");
 const geolib = require("geolib");
+const http = require("http");
 
 const app = express();
 const PORT = 8000;
@@ -8,8 +9,11 @@ const PORT = 8000;
 // Store driver locations
 let drivers = {};
 
-// Create WebSocket server
-const wss = new WebSocketServer({ port: 8080 });
+// Create HTTP server using Express app
+const server = http.createServer(app);
+
+// Create WebSocket server on the same HTTP server
+const wss = new WebSocketServer({ server });
 
 wss.on("connection", (ws) => {
   ws.on("message", (message) => {
@@ -61,6 +65,7 @@ app.get("/healthcheck", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+// Start the server on the same port
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
